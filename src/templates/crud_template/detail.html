@@ -1,0 +1,213 @@
+{% extends 'body.html' %}
+{% load i18n %}
+{% block title %}
+    {% if flag %}
+        {% trans 'Detalles de' %} {{ name }}
+    {% else %}
+        {% trans 'Detalles de' %} {{ name }}
+    {% endif %}
+{% endblock %}
+{% block contents %}
+    <div>
+        <div class=" mt-3 row">
+            <div class="border-3 rounded">
+                <div class="" style="margin: 0px 80px">
+                    {% if object.stock_number %}
+                        {% include 'crud_template/detail_fixed_asset.html' %}
+                    {% else %}
+                        {% include 'crud_template/detail_worker.html' %}
+                    {% endif %}
+                    <div class="d-flex justify-content-end">
+                        {% if body %}
+
+                            <button id="changhe_office" class="btn-sm  btn-warning btn text-black"
+                                    title="{% trans 'Cambiar de Oficina' %}" style="margin-right: 8px">
+                                Cambiar de oficina
+                            </button>
+                            <button id="send_fa" class="btn-sm  btn-danger btn text-black"
+                                    title="{% trans 'Traspasar activos fijos' %}" style="margin-right: 8px">
+                                Traspasar activos fijos
+                            </button>
+                        {% endif %}
+                        <a href="
+                        {% if object.stock_number %}
+                            {% url 'inventory:update_fixed_asset_view' object.id %}
+                        {% else %}
+                            {% url 'people:update_worker_view' object.id %}
+                        {% endif %}" style="margin-right: 9px">
+
+                            <button class="btn btn-warning btn-sm  " title="{% trans 'Modificar' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                                     class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd"
+                                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                </svg>
+                            </button>
+                        </a>
+                        <a href="javascript:history.back()" title="{% trans 'Atras' %}">
+                            <button class="btn btn-secondary btn-sm text-black">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+                                </svg>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        {% include 'modal_change_office.html' %}
+    </div>
+{% endblock %}
+<div id="ad">error</div>
+{% block scrip %}
+    <script>
+        //-------------Change_None--------------------------------------
+        let cel_list = document.getElementsByTagName('td')
+        for (let i = 0; i < cel_list.length; i++) {
+            let txt = cel_list[i].innerHTML
+            if (txt.includes('None')) {
+                cel_list[i].innerHTML = txt.replace('None', '---')
+            }
+        }
+
+        //----------------Detail_Worker-------------------------------
+        window.addEventListener('load', async () => {
+                if (window.location.toString().includes('worker') || window.location.toString().includes('user')) {
+                    let person = document.getElementById('person')
+                    qs = '{personById(id:' + person.innerText + '){name, area{name}}}'
+                    prom = await search_ls_api(person.innerText)
+                    if ((!prom.area) || (!prom.active)) {
+                        person.classList.add('text-decoration-line-through')
+                        person.style.color = 'red'
+                    }
+                    person.innerText = prom.name
+                }
+            }
+        );
+        //---------------Detail_FixedAssent--------------
+        window.addEventListener('load', async () => {
+            list_id_worker = document.getElementsByClassName('a_id_sub_list')
+            for (let i = 0; i < list_id_worker.length; i++) {
+                prom = await search_ls_api(list_id_worker[i].innerText)
+                if ((!prom.area) || (!prom.active)) {
+                    list_id_worker[i].style.color = 'red'
+                    list_id_worker[i].classList.add('text-decoration-line-through')
+                }
+                if (prom.no_storage) {
+                    list_id_worker[i].parentElement.innerHTML = '<span class="a_id_sub_list">' + prom.name + '</span'
+                    continue
+                }
+                {% if not perms.inventory.can_view_the_dpto_fixedasset and  not perms.inventory.can_view_all_fixedasset%}
+                    list_id_worker[i].parentElement.innerHTML = '<span class="a_id_sub_list">' + prom.name + '</span'
+                    continue
+                {% endif %}
+                list_id_worker[i].innerText = prom.name
+            }
+        })
+
+        //----------------checkbox----------------------
+        function change_statu_checkbox_detail_worker(input_checkbox) {
+            tbody_toggle_checkbox = input_checkbox.parentElement.parentElement.parentElement.parentElement.children[1].children
+            for (let k = 0; k < tbody_toggle_checkbox.length; k++) {
+                if (input_checkbox.checked)
+                    tbody_toggle_checkbox[k].children[0].children[0].checked = true
+                else
+                    tbody_toggle_checkbox[k].children[0].children[0].checked = false
+            }
+        }
+
+        function change_state_toggle_detail(input_checkbox) {
+            list_check = []
+            list_temp = input_checkbox.parentElement.parentElement.parentElement.parentElement.children[1].children
+            for (let i = 0; i < list_temp.length; i++)
+                list_check.push(list_temp[i].children[0].children[0])
+            toggle_checkbox = input_checkbox.parentElement.parentElement.parentElement.parentElement.children[0].children[1].children[0].children[0]
+            let count = 0
+            for (let i = 0; i < list_check.length; i++)
+                if (list_check[i].checked) {//para saber la cantidad de checkbox que estan en true
+                    count++
+                    if (toggle_checkbox.checked)
+                        toggle_checkbox.checked = false
+                }
+            if (count == list_check.length)
+                toggle_checkbox.checked = true
+            else
+                toggle_checkbox.checked = false
+        }
+
+        //-----arrive_modal_detail_worker---------
+        document.getElementById('changhe_office').addEventListener('click', check_checkbox_seleted)
+        document.getElementById('send_fa').addEventListener('click', check_checkbox_seleted)
+
+        async function check_checkbox_seleted(e) {
+            id_target = event.target.getAttribute('id')
+            list_checkbox = document.getElementsByClassName('col_check')
+            let count = 0
+            for (let i = 0; i < list_checkbox.length; i++) {
+                if (list_checkbox[i].checked)
+                    count++
+            }
+            if (count > 0) {
+                select = document.getElementById('modal_selected_detail_worker')
+                let new_option = ''
+                document.getElementById('change_office_modal').click()
+                if (id_target.toString() == 'send_fa') {
+                    document.getElementById('staticBackdropLabel').innerText = '{% trans 'Seleccione un trabajador' %}'
+                    {% for worker in worker_all %}
+                        name_worker = await search_ls_api({{ worker.id_person }})
+                        new_option += '<option value="{{ worker.id }}">' + name_worker.name + '</option>'
+                    {% endfor %}
+                    if (new_option.length > 0)
+                        select.innerHTML = new_option
+                } else {
+                    document.getElementById('staticBackdropLabel').innerText = '{% trans 'Seleccione una oficina' %}'
+                    {% for office in office_all %}
+                        new_option += '<option value="{{ office.id }}">{{ office }}</option>'
+                    {% endfor %}
+                    if (new_option.length > 0)
+                        select.innerHTML = new_option
+                }
+            } else {
+                const new_elemt_type_sms = document.createElement("div")
+                new_elemt_type_sms.setAttribute('id', 'type_sms')
+                new_elemt_type_sms.setAttribute('hidden', '')
+                new_elemt_type_sms.innerText = 'error'
+                if (document.getElementById('type_sms'))
+                    document.getElementById('type_sms').remove()
+                document.querySelector('body').appendChild(new_elemt_type_sms)
+                const new_elemt_sms = document.createElement("div")
+                new_elemt_sms.setAttribute('id', 'sms')
+                new_elemt_sms.setAttribute('hidden', '')
+                new_elemt_sms.innerText = '{% trans 'Debe seleccionar al menos un activo fijo' %}'
+                if (document.getElementById('sms'))
+                    document.getElementById('sms').remove()
+                document.querySelector('body').appendChild(new_elemt_sms)
+                messege(new_elemt_type_sms.innerText, new_elemt_sms.innerText)
+
+            }
+
+        }
+
+        //---------post_form_modal_detail_worker----------------
+        document.getElementById('submit_input_modal_detail_worker').addEventListener('click', () => {
+            text_value_id = ''
+            col_select = document.getElementsByClassName('col_check')
+            for (let i = 0; i < col_select.length; i++) {
+                if (col_select[i].checked)
+                    text_value_id += col_select[i].getAttribute('value') + ','
+            }
+            title = document.getElementById('staticBackdropLabel').innerText.toString()
+            if (title.includes('office') || title.includes('oficina'))
+                document.getElementById('type_operation').setAttribute('value', 'oficina')
+            if (title.includes('worker') || title.includes('trabajador'))
+                document.getElementById('type_operation').setAttribute('value', 'trabajador')
+            document.getElementById('list_id_office_worker').setAttribute('value', text_value_id)
+            document.getElementById('form_model_detail_worker').submit()
+        })
+    </script>
+{% endblock %}

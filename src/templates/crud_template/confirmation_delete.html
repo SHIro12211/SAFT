@@ -1,0 +1,194 @@
+{% extends 'body.html' %}
+{% load i18n %}
+{% block title %}
+    {% trans 'Confirmación de eliminación' %}
+{% endblock %}
+{% block contents %}
+    <div class="container">
+        <div>
+            <form class="border-3 rounded mb-2" method="post" style="max-width: 79vw; position:relative;bottom:8px;
+margin-left: 40px">
+                {% csrf_token %}
+                <h5 class="text-start text-muted"><b>{% trans 'Seguro de realizar las siguientes acciones' %}:</b></h5>
+
+                {% if list_object %}
+                    <ul>
+                        {% for item in list_object %}
+                            <table class="table table-borderless table-sm">
+                                <tr>
+                                    <td class="lh-1">
+                                        {% if flag %}
+                                            {% url 'inventory:detail_fixed_asset_view' item.obj_delete.id  as url_desactive %}
+                                        {% else %}
+                                            {% url 'people:detail_worker_view' item.obj_delete.id  as url_desactive %}
+                                        {% endif %}
+                                        <li>
+                                            <p class="text-start mb-0 mt-0 p_list_name"><b>{% trans 'Eliminar' %}</b>:
+                                                <a
+                                                        href="{{ url_desactive }}"
+                                                        class="a_id_list">{{ item.obj_delete }}</a>
+                                            </p>
+                                        </li>
+                                        {% if item.list %}
+                                            <div>
+                                            <span class="text-start action mt-1">
+                                                <p class="mb-1 mt-1">{% trans '¿Seguro de eliminar el activo fijo de los siguientes trabajadores?' %}</p>
+                                            </span>
+                                                <ul>
+                                                    {% for q in item.list %}
+                                                        {% if flag %}
+                                                            {% url 'people:detail_worker_view' q.id  as url_delete %}
+                                                        {% else %}
+                                                            {% url  'inventory:detail_fixed_asset_view' q.id  as url_delete %}
+                                                        {% endif %}
+                                                        <li><a class="a_id_sub_list" href="{{ url_delete }}">{{ q }}</a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if dpto %}
+                    <p><b>Eliminar</b> de forma permanentemente el departamento "{{ object }}"</p>
+                    {% if object.worker_set.all %}
+                        <p>{% trans 'Los siguientes trabajadores seran eliminados permanetemente y sus activos fijos seran dado baja en caso de ser los unicos dueños:' %}</p>
+                        <ul>
+                            {% for w in object.worker_set.all %}
+                                <li><a class="worker_dpto"
+                                       href="{% url 'people:detail_worker_view' w.id %}">{{ w.id_person }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <p class="fw-bold "
+                       style="color: red;">({% trans 'Esta acción sera inrreversible' %})</p>
+                {% endif %}
+                {% if offi %}
+                    <p><b>Eliminar</b> de forma permanentemente la oficina "{{ object.number }}"</p>
+                    {% if object.fixedasset_set.all %}
+                        <p>{% trans 'Los siguientes activos fijos seran eliminados permanetemente:' %}</p>
+                        <ul>
+                            {% for af in object.fixedasset_set.all %}
+                                <li><a href="{% url 'inventory:detail_fixed_asset_view' af.id %}">No.Inv
+                                    :{{ af.stock_number }}</a>
+                                    {% if af.id_worker.all %}
+                                        <p>{% trans 'Responasables:' %}</p>
+                                        <ul style="position:relative;bottom: 10px">
+                                            {% for w in af.id_worker.all %}
+                                                <li>
+                                                    <a class="worker_office"
+                                                       href="{% url 'people:detail_worker_view' w.id %}">{{ w.id_person }}</a>
+                                                </li>
+
+                                            {% endfor %}
+
+                                        </ul>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <p class="fw-bold "
+                       style="color: red;">({% trans 'Esta acción sera inrreversible' %})</p>
+                {% endif %}
+                {% if type_fa %}
+                    <p><b>Eliminar</b> de forma permanentemente el tipo de activo fijo "{{ object.type_FixedAsset }}"
+                    </p>
+                    {% if object.fixedasset_set.all %}
+
+                        <p>{% trans 'Los siguientes activos fijos seran eliminados permanetemente:' %}</p>
+                        <ul>
+                            {% for af in object.fixedasset_set.all %}
+                                <li><a href="{% url 'inventory:detail_fixed_asset_view' af.id %}">No.Inv
+                                    :{{ af.stock_number }}</a>
+                                    {% if af.id_worker.all %}
+                                        <p>{% trans 'Responasables:' %}</p>
+                                        <ul style="position:relative;bottom: 10px">
+                                            {% for w in af.id_worker.all %}
+                                                <li>
+                                                    <a class="worker_type_af"
+                                                       href="{% url 'people:detail_worker_view' w.id %}">{{ w.id_person }}</a>
+                                                </li>
+
+                                            {% endfor %}
+
+                                        </ul>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <p class="fw-bold "
+                           style="color: red;">({% trans 'Esta acción sera inrreversible' %})</p>
+                    {% endif %}
+                {% endif %}
+                <input type="hidden" name="list_object_delete" id="list_object" value="{{ list_id }}">
+                <div class="text-end" style="margin-right: 40px">
+                    <a href="{{ back_url }}" style="margin-right: 10px">
+                        <button type="button" class="btn btn-danger text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </button>
+                    </a>
+                    <button type="submit" class="btn btn-success text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                             fill="currentColor" class="bi bi-check2"
+                             viewBox="0 0 16 16">
+                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block scrip %}
+    <script>
+        //------------Para cambiar los id de trabajadores--------------
+        window.addEventListener('load', async () => {
+            if (window.location.toString().includes('fixedasset'))
+                list_id_worker = document.getElementsByClassName('a_id_sub_list')
+            if (window.location.toString().includes('worker'))
+                list_id_worker = document.getElementsByClassName('a_id_list')
+            if (window.location.toString().includes('deletedepartment/'))
+                list_id_worker = document.getElementsByClassName('worker_dpto')
+            if (window.location.toString().includes('deleteoffice/'))
+                list_id_worker = document.getElementsByClassName('worker_office')
+            if (window.location.toString().includes('deletetypefixedasset/'))
+                list_id_worker = document.getElementsByClassName('worker_type_af')
+            for (let i = 0; i < list_id_worker.length; i++) {
+                prom = await search_ls_api(list_id_worker[i].innerText)
+                console.log(list_id_worker[i].innerHTML)
+
+                if ((!prom.area) || (!prom.active)) {
+                    list_id_worker[i].style.color = 'red'
+                    list_id_worker[i].classList.add('text-decoration-line-through')
+                }
+                if (prom.no_storage) {
+                    list_id_worker[i].parentElement.innerHTML = '<span class="a_id_sub_list">' + prom.name + '</span'
+                    if (window.location.toString().includes('deleteoffice/') || window.location.toString().includes('deletetypefixedasset'))
+                        i--
+                } else
+                    list_id_worker[i].innerText = prom.name
+
+
+            }
+        })
+        //------------modidficar texto para diferenciar los eliminar----------
+        if (window.location.toString().includes('worker')) {
+            list_name_for_delete = document.getElementsByClassName('p_list_name')
+            list_title_delete = document.getElementsByClassName('action')
+            for (let i = 0; i < list_name_for_delete.length; i++) {
+                text = list_name_for_delete[i].innerHTML.replace('{% trans 'activo fijo' %}', '{% trans 'trabajador' %}')
+                list_name_for_delete[i].innerHTML = text
+                list_title_delete[i].innerText = '{% trans 'Lista de activos fijos del trabajador a eliminar:' %}'
+            }
+        }
+        //----------------------------------------------------------
+    </script>
+{% endblock %}

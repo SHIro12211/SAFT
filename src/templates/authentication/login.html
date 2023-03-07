@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans 'Inicio de Sesión' %}{% endblock %}
+{% block body %}
+    <div class="d-flex h-100">
+        <div style="margin: 10% auto auto auto">
+            <div class="card card-header bg-dark text-white text-center fs-5  rounded-top">
+                {% trans 'Sistema de Gestión de Activos Fijos' %}
+            </div>
+            <form method="post" class="card-body rounded-bottom border border-dark shadow p-3"
+                  style="background-color: rgba(184,184,184,0.76)">
+                {% csrf_token %}
+                <div class="form-outline mb-2">
+                    <label class="form-label mb-0" for="id_username">
+                        {% trans 'Nombre de usuario' %}:
+                    </label>
+                    {{ form.username }}
+                </div>
+                <div class="form-outline mb-5">
+                    <label class="form-label mb-0" for="id_password">
+                        {% trans 'Contraseña' %}:
+                    </label>
+                    {{ form.password }}
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit"
+                            class="btn btn-primary btn-block  w-75 mb-0">{% trans 'Iniciar Sesión' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+                            <path fill-rule="evenodd"
+                                  d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                        </svg>
+                    </button>
+                    <input type="hidden" name="next" value="{{ next }}">
+                </div>
+                {#--------VERSION------#}
+                <p class="m-0 p-0 w-100 text-end" style="position: relative; top: 15px">ver 1.0</p>
+                {% if form.errors %}
+                    <div hidden>
+                        {{ form.errors }}
+                        <div id="type">error</div>
+                        <div id="sms">{% trans 'Su nombre de usuario y contraseña no existen. Inténtalo de nuevo.' %}</div>
+                    </div>
+                {% endif %}
+                {% if next %}
+                    {% if user.is_authenticated %}
+                    {% else %}
+                        <div hidden>
+                            <div id="type">info</div>
+                            <div id="sms">{% trans 'Por favor inicie sesión para ver esta página.' %}</div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}
+

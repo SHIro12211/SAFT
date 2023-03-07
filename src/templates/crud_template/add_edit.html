@@ -1,0 +1,109 @@
+{% extends 'body.html' %}
+{% load i18n %}
+{% block title %}
+    {% if flag %}
+        {% trans 'Modificar ' %} {{ name }}
+    {% else %}
+        {% trans 'Añadir ' %} {{ name }}
+    {% endif %}
+{% endblock %}
+{% block contents %}
+    <div class="container">
+        <div class=" mt-4 d-flex m-2">
+            <form id="form_add_modify" class="w-100 border-3 rounded needs-validation"
+                  novalidate method="post" style="margin: 0 50px">
+                <div id="window_add">
+                    {% include 'form_template.html' %}
+                </div>
+                <div class="d-flex justify-content-end " style="position:relative;right: 92px">
+                    <a class="text-decoration-none text-black-50"
+                       href="{{ back }}">
+                        <button class="btn btn-danger m-1 text-black-50 btn-sm " type="button"
+                                title="{% trans 'Atras' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </button>
+                    </a>
+                    <button id="save_input" class="btn btn-success btn-sm m-1 text-black-50" type="submit"
+                            title="{% trans 'Añadir' %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                             fill="currentColor" class="bi bi-check2"
+                             viewBox="0 0 16 16">
+                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block scrip %}
+    <script>
+        //--------------limpiar datos vacios en el select de la vista de worker-add-------------------
+        window.addEventListener('load', () => {
+            if (window.location.href.toString().includes('addfixedasset/') || window.location.href.toString().includes('updatefixedasset'))
+                varr = document.getElementById('id_id_office')
+            if (window.location.href.toString().includes('addworker') || window.location.href.toString().includes('updateworker'))
+                varr = document.getElementById('id_id_department')
+            if (window.location.href.toString().includes('addheaddepartment') || window.location.href.toString().includes('updateheaddepartment')) {
+                clean_select(document.getElementById('id_id_worker'))
+                clean_select(document.getElementById('id_id_department'))
+            }
+            clean_select(varr)
+        })
+        //----------------------llenar local storage---------------------------
+        window.addEventListener('load', async () => {
+            fill_localstorage('{{ user.person }}')
+            if (window.location.href.toString().includes('addfixedasset/') || window.location.href.toString().includes('updatefixedasset/') || window.location.href.toString().includes('addheaddepartment/') || window.location.href.toString().includes('updateheaddepartment/')) {
+                list_option = document.getElementById('id_id_worker').children
+                {% if perms.inventory.can_view_the_dpto_fixedasset or perms.inventory.can_view_all_fixedasset%}
+                    let text_list_name = localStorage.getItem('saft_list_person_id_name')
+                    text_list_name = JSON.parse(text_list_name)
+                    if (text_list_name) {//si hay datos en el Local Storage
+                        res_option = ''
+                        for (let i = 0; i < list_option.length; i++) {
+                            if (list_option[i].getAttribute('value')) {
+                                list_attr = list_option[i].getAttributeNames().find(element => element.toString() == 'selected')
+                                if (list_attr) {
+                                    res_option += '<option selected="" value="' + list_option[i].getAttribute('value') + '">' + list_option[i].innerText + '</option>'
+                                } else {
+                                    res_option += '<option value="' + list_option[i].getAttribute('value') + '">' + list_option[i].innerText + '</option>'
+                                }
+                            }
+                        }
+                    }
+                    document.getElementById('id_id_worker').innerHTML = res_option
+                {% endif %}
+                list_option = document.getElementById('id_id_worker').children
+                if (list_option) {
+                    for (let i = 0; i < list_option.length; i++) {
+                        prom = await search_ls_api(list_option[i].innerText)
+                        console.log(prom.name)
+                        if ((!prom.area) || (!prom.active)) {
+                            list_option[i].style.color = 'red'
+                            list_option[i].setAttribute('title', '{% trans 'Este trabajador no es de Infocomunicaciones' %}')
+                            list_option[i].classList.add('text-decoration-line-through')
+                        }
+                        list_option[i].innerText = prom.name
+                    }
+                }
+            }
+        })
+
+        window.addEventListener('keyup', function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById('save_input').click()
+            }
+        })
+
+        window.addEventListener('load', () => {
+            if (window.location.href.toString().includes('worker/')) {
+                options = document.getElementById('id_id_person').innerHTML
+                document.getElementById('id_id_person').innerHTML = '<option value="0">---------</option>' + options
+            }
+        })
+    </script>
+{% endblock %}

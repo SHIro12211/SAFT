@@ -1,0 +1,87 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    {#    ----------datatable-------------#}
+    <link rel="stylesheet" type="text/css" href="{% static 'datatables/datatables.min.css' %}">
+    {#-------totastr------------#}
+    <link rel="stylesheet" type="text/css" href="{% static 'Toastr/build/toastr.min.css' %}">
+    <title id="title">{% block title %}{% endblock %}</title>
+</head>
+<body style="background:radial-gradient(#ffffff, rgba(205,205,205,0.39));">
+{% block body %}{% endblock %}
+{% include 'language.html' %}
+{% if messages %}
+    {% for message in messages %}
+        <div hidden>
+            <div id="type_sms">{{ message.tags }}</div>
+            <div id="sms">{{ message }}</div>
+        </div>
+    {% endfor %}
+{% endif %}
+<div hidden id="api_url" data-api_url="{{ api_url }}"></div>
+
+
+{# estilo en boostrap #}
+<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'js/table.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/clean_select.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/localstorage_or_api.js' %}"></script>
+{#------datataables---------#}
+<script type="text/javascript" src="{% static 'datatables/datatables.min.js' %}"></script>
+{#-------totastr------------#}
+<script type="text/javascript" src="{% static 'Toastr/build/toastr.min.js' %}"></script>
+<script>
+
+    window.addEventListener('load', () => {
+        type = document.getElementById('type_sms');
+        sms = document.getElementById('sms');
+        if (type && sms) {
+            messege(type.innerText, sms.innerText);
+        }
+    })
+    window.addEventListener('load', () => {
+        type = document.getElementById('type');
+        sms = document.getElementById('sms');
+        if (type && sms) {
+            messege(type.innerText, sms.innerText);
+        }
+    })
+
+    function messege(type, messege) {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "2500",
+            "extendedTimeOut": "100",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        toastr[type](messege);
+    };
+
+    btn_log_out = document.getElementById('log_out')
+    btn_log_out_res = document.getElementById('log_out_res')
+    btn_log_out.addEventListener('click', () => {
+        localStorage.clear()
+    })
+    btn_log_out_res.addEventListener('click', () => {
+        localStorage.clear()
+    })
+</script>
+{% block scrip %}{% endblock %}
+</body>
+</html>

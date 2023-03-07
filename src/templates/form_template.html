@@ -1,0 +1,24 @@
+{% csrf_token %}
+{% load i18n %}
+{% if form.visible_fields %}
+    {% for field in form.visible_fields %}
+        <div class="row mb-1">
+            <label class="col-sm-3 col-form-label" for="id_{{ field.name }}">{% trans field.label %}</label>
+            <div class="col-sm-8">
+                {{ field }}
+                {% if field.help_text %}
+                    <small style="color: gray">
+                        {{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <small style="color: red; font-family: Arial">{{ error }}</small>
+
+                {% endfor %}
+            </div>
+
+        </div>
+
+
+    {% endfor %}
+{% endif %}
+
