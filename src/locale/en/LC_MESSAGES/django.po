@@ -1,0 +1,721 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-22 23:25+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\saft\apps\inventory\form.py:64 .\saft\apps\people\models.py:47
+msgid "Trabajadores"
+msgstr "Workers"
+
+#: .\saft\apps\inventory\models.py:14
+msgid "Número de Oficina"
+msgstr "Office number"
+
+#: .\saft\apps\inventory\models.py:19 .\saft\apps\inventory\views.py:163
+msgid "Descripción"
+msgstr "Description"
+
+#: .\saft\apps\inventory\models.py:32 .\saft\apps\inventory\models.py:111
+#: .\templates\crud_template\detail_fixed_asset.html:18
+msgid "Oficina"
+msgstr "Office"
+
+#: .\saft\apps\inventory\models.py:33 .\templates\body.html:211
+#: .\templates\body.html:359
+msgid "Oficinas"
+msgstr "Offices"
+
+#: .\saft\apps\inventory\models.py:38 .\saft\apps\inventory\models.py:80
+#: .\saft\apps\inventory\views.py:197 .\saft\apps\inventory\views.py:695
+#: .\templates\crud_template\detail_fixed_asset.html:10
+#: .\templates\crud_template\detail_worker.html:43
+msgid "Tipo"
+msgstr "Type"
+
+#: .\saft\apps\inventory\models.py:47
+msgid "Tipo de Activo Fijo"
+msgstr "Type of Fixed Asset"
+
+#: .\saft\apps\inventory\models.py:48 .\saft\apps\inventory\views.py:199
+msgid "Tipos de Activos Fijos"
+msgstr "Types of Fixed Assets"
+
+#: .\saft\apps\inventory\models.py:53 .\saft\apps\inventory\models.py:62
+#: .\saft\apps\inventory\models.py:104 .\saft\apps\inventory\views.py:695
+#: .\templates\crud_template\detail_fixed_asset.html:15
+#: .\templates\crud_template\detail_worker.html:47
+msgid "Estado"
+msgstr "Statu"
+
+#: .\saft\apps\inventory\models.py:63
+msgid "Estados"
+msgstr "Status"
+
+#: .\saft\apps\inventory\models.py:68 .\saft\apps\inventory\views.py:695
+#: .\templates\crud_template\detail_fixed_asset.html:6
+msgid "Número de inventario"
+msgstr "Stock number"
+
+#: .\saft\apps\inventory\models.py:83 .\saft\apps\inventory\views.py:695
+#: .\templates\crud_template\detail_fixed_asset.html:7
+#: .\templates\crud_template\detail_worker.html:44
+msgid "Modelo"
+msgstr "Model"
+
+#: .\saft\apps\inventory\models.py:90 .\saft\apps\inventory\views.py:695
+#: .\templates\crud_template\detail_fixed_asset.html:11
+msgid "Marca"
+msgstr "Brand"
+
+#: .\saft\apps\inventory\models.py:96 .\saft\apps\inventory\views.py:695
+#: .\templates\crud_template\detail_fixed_asset.html:14
+msgid "Número de serie"
+msgstr "Serial number"
+
+#: .\saft\apps\inventory\models.py:116 .\saft\apps\inventory\views.py:696
+#: .\templates\crud_template\detail_fixed_asset.html:42
+msgid "Observaciones"
+msgstr "Observations"
+
+#: .\saft\apps\inventory\models.py:122
+#: .\templates\crud_template\detail_fixed_asset.html:19
+#: .\templates\crud_template\detail_worker.html:48
+msgid "Ultima actualización"
+msgstr "Last update"
+
+#: .\saft\apps\inventory\models.py:126
+msgid "En uso"
+msgstr "In use"
+
+#: .\saft\apps\inventory\models.py:134 .\saft\apps\people\models.py:23
+#: .\saft\apps\people\models.py:46
+msgid "Trabajador"
+msgstr "Worker"
+
+#: .\saft\apps\inventory\models.py:141
+msgid "Activo Fijo"
+msgstr "Fixed Asset"
+
+#: .\saft\apps\inventory\models.py:142 .\templates\body.html:138
+#: .\templates\body.html:275
+msgid "Activos Fijos"
+msgstr "Fixed Assets"
+
+#: .\saft\apps\inventory\views.py:66
+msgid "Tabla de Activos Fijos"
+msgstr "Table of Fixed Assets"
+
+#: .\saft\apps\inventory\views.py:68 .\saft\apps\people\models.py:57
+#: .\saft\apps\people\views.py:77 .\templates\body.html:152
+#: .\templates\body.html:177 .\templates\body.html:291
+#: .\templates\body.html:320 .\templates\export_pdf.html:124
+msgid "Área"
+msgstr "Area"
+
+#: .\saft\apps\inventory\views.py:70 .\saft\apps\people\models.py:17
+#: .\saft\apps\people\models.py:34 .\saft\apps\people\views.py:75
+#: .\templates\body.html:150 .\templates\body.html:175
+#: .\templates\body.html:289 .\templates\body.html:318
+#: .\templates\crud_template\detail_worker.html:29
+msgid "Departamento"
+msgstr "Department"
+
+#: .\saft\apps\inventory\views.py:71
+msgid "Activos Fijos del "
+msgstr "Fixeds Assets of"
+
+#: .\saft\apps\inventory\views.py:99
+msgid "Mis Activos Fijos"
+msgstr "My fixeds assets"
+
+#: .\saft\apps\inventory\views.py:112 .\saft\apps\inventory\views.py:187
+#: .\saft\apps\inventory\views.py:334 .\saft\apps\inventory\views.py:453
+#: .\saft\apps\inventory\views.py:585 .\saft\apps\inventory\views.py:618
+msgid "Usted no tiene persmiso para acceder a esa vista"
+msgstr "You do not have permission to access that view"
+
+#: .\saft\apps\inventory\views.py:118
+msgid "Activos Fijos en estado de baja"
+msgstr "Fixed assets in retirement status"
+
+#: .\saft\apps\inventory\views.py:162
+msgid "Oficinas del Área"
+msgstr "Offices of Area"
+
+#: .\saft\apps\inventory\views.py:163
+msgid "Número"
+msgstr "Number"
+
+#: .\saft\apps\inventory\views.py:163
+msgid "cantidad de activos fijos"
+msgstr "amount of fixed assets"
+
+#: .\saft\apps\inventory\views.py:164
+msgid "Tabla de Oficinas"
+msgstr "Table of Offices"
+
+#: .\saft\apps\inventory\views.py:197
+msgid "Cantidad de activos fijos"
+msgstr "Amount of fixed assets"
+
+#: .\saft\apps\inventory\views.py:198
+msgid "Tabla de Tipos de Activos Fijos"
+msgstr "Table of Types of Fixed Assets"
+
+#: .\saft\apps\inventory\views.py:220 .\templates\crud_template\add_edit.html:7
+msgid "Añadir "
+msgstr "Add"
+
+#: .\saft\apps\inventory\views.py:226 .\saft\apps\people\views.py:169
+#: .\saft\apps\people\views.py:212
+msgid " añadido exitosamente"
+msgstr " successfully added"
+
+#: .\saft\apps\inventory\views.py:230 .\saft\apps\inventory\views.py:367
+#: .\saft\apps\inventory\views.py:602 .\saft\apps\inventory\views.py:635
+msgid "Datos incorrectos, por favor, corriga los errores señalados"
+msgstr "Incorrect data, please correct the indicated errors"
+
+#: .\saft\apps\inventory\views.py:260
+msgid "El usario actual no tiene permiso para realizar la operacion anterior"
+msgstr "The current user does not have permission to perform the above action"
+
+#: .\saft\apps\inventory\views.py:358
+msgid "Editar "
+msgstr "Edit"
+
+#: .\saft\apps\inventory\views.py:363
+msgid " editado exitosamente"
+msgstr " successfully edited"
+
+#: .\saft\apps\inventory\views.py:387 .\saft\apps\inventory\views.py:394
+#: .\saft\apps\inventory\views.py:399 .\saft\apps\inventory\views.py:662
+#: .\saft\apps\inventory\views.py:670 .\saft\apps\inventory\views.py:676
+msgid "El activo fijo ID:"
+msgstr "The fixed asset ID:"
+
+#: .\saft\apps\inventory\views.py:524
+msgid "Solo puede dar baja a trabajadores que no posean activos fijos"
+msgstr "You can only terminate workers who do not have fixed assets"
+
+#: .\saft\apps\inventory\views.py:547
+msgid "Activo fijo eliminado exitosamente"
+msgstr "Fixed asset successfully removed"
+
+#: .\saft\apps\inventory\views.py:598
+msgid "Oficina eliminada exitomante"
+msgstr "Office successfully removed"
+
+#: .\saft\apps\inventory\views.py:631
+msgid "Tipo de activo fijo eliminado exitomante"
+msgstr "Type Fixed asset successfully removed"
+
+#: .\saft\apps\inventory\views.py:650
+msgid "Detalles de "
+msgstr "Details of "
+
+#: .\saft\apps\inventory\views.py:689 .\saft\apps\inventory\views.py:710
+msgid "Exportar activos fijos a PDF"
+msgstr "Export fixed assets to PDF"
+
+#: .\saft\apps\inventory\views.py:696
+msgid "Responsable(s)"
+msgstr "Responsible(s)"
+
+#: .\saft\apps\people\form.py:131
+msgid "Nombre del Trabajador"
+msgstr "Worker name"
+
+#: .\saft\apps\people\models.py:8 .\saft\apps\people\views.py:115
+#: .\templates\crud_template\detail_worker.html:5
+msgid "Nombre"
+msgstr "Name"
+
+#: .\saft\apps\people\models.py:18 .\saft\apps\people\views.py:126
+#: .\templates\body.html:207 .\templates\body.html:354
+msgid "Departamentos"
+msgstr "Departments"
+
+#: .\saft\apps\people\models.py:29
+#: .\templates\crud_template\detail_worker.html:6
+msgid "Correo"
+msgstr "Mail"
+
+#: .\saft\apps\people\models.py:38
+#: .\templates\crud_template\detail_fixed_asset.html:23
+#: .\templates\crud_template\detail_worker.html:10
+msgid "Activo"
+msgstr "Active"
+
+#: .\saft\apps\people\models.py:54 .\saft\apps\people\models.py:64
+msgid "Jefe de área"
+msgstr "Head of area"
+
+#: .\saft\apps\people\models.py:65
+msgid "Jefes de áreas"
+msgstr "Heads of areas"
+
+#: .\saft\apps\people\models.py:72 .\saft\apps\people\models.py:84
+msgid "Jefe de departamento"
+msgstr "Head of department"
+
+#: .\saft\apps\people\models.py:77 .\saft\apps\people\models.py:85
+msgid "Jefes de departamentos"
+msgstr "Heads of departments"
+
+#: .\saft\apps\people\views.py:78
+msgid "Cantidad de AF"
+msgstr "Amount of FA"
+
+#: .\saft\apps\people\views.py:83
+msgid "Trabajadores del "
+msgstr "Workers of"
+
+#: .\saft\apps\people\views.py:84
+msgid "Tabla de Trabajadores"
+msgstr "Table of Workers"
+
+#: .\saft\apps\people\views.py:115
+msgid "Jefe del Dpto."
+msgstr "Head of Dpto"
+
+#: .\saft\apps\people\views.py:115
+msgid "Cantidad de Trabajadores"
+msgstr "Amount of Workers"
+
+#: .\saft\apps\people\views.py:116
+msgid "Cantida de Activos Fijos"
+msgstr "Table of Fixed Assets"
+
+#: .\saft\apps\people\views.py:127
+msgid "Tabla de Departamentos"
+msgstr "Table of Departments"
+
+#: .\saft\apps\people\views.py:149
+msgid "Trabajadores en estado de baja "
+msgstr "Workers on sick leave"
+
+#: .\saft\apps\people\views.py:150
+msgid "Tabla de Trabajadores de baja"
+msgstr "Table of Workers on sick leave"
+
+#: .\saft\apps\people\views.py:288
+msgid "Solo puede dar baja a trabajadores sin activos fijos"
+msgstr "You can only terminate workers without fixed assets"
+
+#: .\saft\apps\people\views.py:293
+msgid "Trabajadores eliminado exitosamente"
+msgstr " Workers removed successfully"
+
+#: .\saft\apps\people\views.py:317 .\saft\apps\people\views.py:334
+msgid "Departamento eliminado exitosamente"
+msgstr "Department removed successfully"
+
+#: .\saft\apps\people\views.py:347
+msgid "El ID : "
+msgstr "The ID :"
+
+#: .\saft\apps\people\views.py:360
+msgid "El ID: "
+msgstr "The ID: "
+
+#: .\saft\apps\people\views.py:397
+msgid "ID: "
+msgstr "ID:"
+
+#: .\saft\apps\people\views.py:407
+msgid "El activo fijo No.Inv: "
+msgstr "The fixed asset No.Inv: "
+
+#: .\saft\apps\people\views.py:415
+msgid "La oficina seleccionada no fue encontrada. ID: "
+msgstr "The selected office was not found"
+
+#: .\saft\apps\people\views.py:420
+msgid "Traslado realizado con exito"
+msgstr "Transfer completed successfully"
+
+#: .\saft\apps\people\views.py:426
+msgid "El trabajador selccionado no fue encontrado. ID: "
+msgstr "The selected worker was not found"
+
+#: .\saft\apps\people\views.py:431
+msgid "Traslado realizado con exito."
+msgstr "Transfer completed successfully"
+
+#: .\saft\settings\base.py:109
+msgid "Spanish"
+msgstr "Español"
+
+#: .\saft\settings\base.py:110
+msgid "English"
+msgstr "Inglés"
+
+#: .\saft\urls.py:12
+msgid "admin/"
+msgstr ""
+
+#: .\templates\authentication\logged_out.html:3
+msgid "Desconectado"
+msgstr "Disconnected"
+
+#: .\templates\authentication\logged_out.html:20
+msgid "Ha cerrado su sección exitosamente"
+msgstr "You have successfully closed section"
+
+#: .\templates\authentication\logged_out.html:22
+msgid "Iniciar sección de nuevo"
+msgstr "Log in again"
+
+#: .\templates\authentication\login.html:3
+#, fuzzy
+#| msgid "Inicio de Sección"
+msgid "Inicio de Sessión"
+msgstr "Log in"
+
+#: .\templates\authentication\login.html:8
+msgid "Sistema de Gestión de Activos Fijos"
+msgstr "Fixed Asset Management System"
+
+#: .\templates\authentication\login.html:15
+msgid "Nombre de usuario"
+msgstr "Username"
+
+#: .\templates\authentication\login.html:21
+msgid "Contraseña"
+msgstr "Password"
+
+#: .\templates\authentication\login.html:27
+#, fuzzy
+#| msgid "Iniciar Sección"
+msgid "Iniciar Sessión"
+msgstr "Log in"
+
+#: .\templates\authentication\login.html:43
+msgid "Su nombre de usuario y contraseña no existen. Inténtalo de nuevo."
+msgstr "Your username and password do not exist. Try again"
+
+#: .\templates\authentication\login.html:58
+#, fuzzy
+#| msgid "Por favor inicie sesión para ver esta página."
+msgid "Por favor inicie sessión para ver esta página."
+msgstr "Please log in to see this page"
+
+#: .\templates\body.html:131 .\templates\body.html:267
+msgid "Sistema de Activos Fijos"
+msgstr "Fixed Asset System"
+
+#: .\templates\body.html:143 .\templates\body.html:281
+msgid "Mis activos fijos"
+msgstr "My fixed asset"
+
+#: .\templates\body.html:148 .\templates\body.html:287
+msgid "Activos fijos del"
+msgstr "Fixed Assets of"
+
+#: .\templates\body.html:158 .\templates\body.html:298
+#, fuzzy
+#| msgid "Activos fijos del"
+msgid "Activos fijos desactivados"
+msgstr "Fixed Assets of"
+
+#: .\templates\body.html:163 .\templates\body.html:305
+msgid "Exportar a PDF"
+msgstr "Export to PDF"
+
+#: .\templates\body.html:173 .\templates\body.html:316
+msgid "Trabajadores del"
+msgstr "Workers of"
+
+#: .\templates\body.html:185 .\templates\body.html:329
+msgid "Trabajadores activos"
+msgstr "Workers active"
+
+#: .\templates\body.html:191 .\templates\body.html:336
+msgid "Trabajadores desactivados"
+msgstr "Workers desactive"
+
+#: .\templates\body.html:201 .\templates\body.html:347
+msgid "Otros"
+msgstr "Others"
+
+#: .\templates\body.html:214 .\templates\body.html:363
+msgid "Tipos de activos fijos"
+msgstr "Types of fixed assets"
+
+#: .\templates\body.html:229 .\templates\body.html:380
+msgid "Detalles"
+msgstr "Details"
+
+#: .\templates\body.html:233 .\templates\body.html:384
+msgid "Desconectar"
+msgstr "Disconnected"
+
+#: .\templates\crud_template\add_edit.html:5
+msgid "Modificar "
+msgstr "Modify"
+
+#: .\templates\crud_template\add_edit.html:22
+#: .\templates\crud_template\detail.html:48
+msgid "Atras"
+msgstr "Back"
+
+#: .\templates\crud_template\add_edit.html:30
+#: .\templates\crud_template\index.html:8
+msgid "Añadir"
+msgstr "Add"
+
+#: .\templates\crud_template\add_edit.html:74
+msgid "Este trabajador no es de Infocomunicaciones"
+msgstr "This worker is not from Infocomunicaciones"
+
+#: .\templates\crud_template\confirmation_delete.html:4
+msgid "Confirmación de eliminación"
+msgstr "Delete confirmation"
+
+#: .\templates\crud_template\confirmation_delete.html:12
+msgid "Seguro de realizar las siguientes acciones"
+msgstr "Are you sure to perform the following actions?"
+
+#: .\templates\crud_template\confirmation_delete.html:26
+#: .\templates\crud_template\detail_worker.html:103
+#: .\templates\crud_template\index.html:21
+#: .\templates\crud_template\index_body.html:107
+#: .\templates\crud_template\index_body.html:135
+#: .\templates\crud_template\index_body.html:147
+#: .\templates\crud_template\index_body.html:175
+msgid "Eliminar"
+msgstr "Remove"
+
+#: .\templates\crud_template\confirmation_delete.html:35
+msgid "¿Seguro de eliminar el activo fijo de los siguientes trabajadores?"
+msgstr "Are you sure to delete the fixed asset of the following workers?"
+
+#: .\templates\crud_template\confirmation_delete.html:59
+msgid ""
+"Los siguientes trabajadores seran eliminados permanetemente y sus activos "
+"fijos seran dado baja en caso de ser los unicos dueños:"
+msgstr ""
+"The following workers will be permanently eliminated and their assets will "
+"be decommissioned if they are the sole owners"
+
+#: .\templates\crud_template\confirmation_delete.html:68
+#: .\templates\crud_template\confirmation_delete.html:96
+#: .\templates\crud_template\confirmation_delete.html:125
+msgid "Esta acción sera inrreversible"
+msgstr "This action will be irreversible"
+
+#: .\templates\crud_template\confirmation_delete.html:73
+#: .\templates\crud_template\confirmation_delete.html:103
+msgid "Los siguientes activos fijos seran eliminados permanetemente:"
+msgstr "The following fixed assets will be permanently deleted"
+
+#: .\templates\crud_template\confirmation_delete.html:79
+#: .\templates\crud_template\confirmation_delete.html:109
+msgid "Responasables:"
+msgstr "Responsible:"
+
+#: .\templates\crud_template\confirmation_delete.html:182
+msgid "activo fijo"
+msgstr "fixed asset"
+
+#: .\templates\crud_template\confirmation_delete.html:182
+msgid "trabajador"
+msgstr "worker"
+
+#: .\templates\crud_template\confirmation_delete.html:184
+msgid "Lista de activos fijos del trabajador a eliminar:"
+msgstr "List of fixed assets to delete:"
+
+#: .\templates\crud_template\detail.html:5
+#: .\templates\crud_template\detail.html:7
+msgid "Detalles de"
+msgstr "Details of"
+
+#: .\templates\crud_template\detail.html:24
+#: .\templates\crud_template\detail.html:28
+msgid "Cambiar de Oficina"
+msgstr "Change of Office"
+
+#: .\templates\crud_template\detail.html:39
+#: .\templates\crud_template\detail_worker.html:87
+#: .\templates\crud_template\index_body.html:44
+#: .\templates\crud_template\index_body.html:71
+#: .\templates\crud_template\index_body.html:94
+#: .\templates\crud_template\index_body.html:122
+#: .\templates\crud_template\index_body.html:162
+msgid "Modificar"
+msgstr "Modify"
+
+#: .\templates\crud_template\detail.html:160
+msgid "Seleccione un trabajador"
+msgstr "Select a worker"
+
+#: .\templates\crud_template\detail.html:168
+msgid "Seleccione una oficina"
+msgstr "Select an office"
+
+#: .\templates\crud_template\detail.html:186
+msgid "Debe seleccionar al menos un activo fijo"
+msgstr "You must select at least one fixed asset"
+
+#: .\templates\crud_template\detail_fixed_asset.html:45
+msgid "Trabajadores responsables"
+msgstr "Responsible workers"
+
+#: .\templates\crud_template\detail_worker.html:42
+msgid "Número de inventario "
+msgstr "Stock number"
+
+#: .\templates\crud_template\detail_worker.html:45
+msgid "Marca "
+msgstr "Brand"
+
+#: .\templates\crud_template\detail_worker.html:46
+msgid "Número de serie "
+msgstr "Serial number"
+
+#: .\templates\crud_template\index.html:67
+msgid "Total"
+msgstr "Total"
+
+#: .\templates\crud_template\index.html:72
+msgid "No existen"
+msgstr "They do not exist"
+
+#: .\templates\crud_template\index.html:121
+msgid "Este trabajador no trabaja en Infocomunicaciones"
+msgstr "This wirker does not work in Infocomunicaciones"
+
+#: .\templates\errors\403.html:4 .\templates\errors\404.html:4
+#: .\templates\errors\500.html:4
+msgid "Error"
+msgstr "Error"
+
+#: .\templates\errors\403.html:10
+msgid "Acceso denegado"
+msgstr "Access denied"
+
+#: .\templates\errors\403.html:12
+msgid "Usted esta intentando acceder a una página que no tiene permiso"
+msgstr "You are trynig to access a page that you do not have permission"
+
+#: .\templates\errors\404.html:10
+msgid "Página no encontrada"
+msgstr "Page not found"
+
+#: .\templates\errors\404.html:12
+msgid "Usted esta intentando acceder a una página que no existe"
+msgstr "You are trynig to access a page that does not exist"
+
+#: .\templates\errors\500.html:10
+msgid "Error interno en el servidor"
+msgstr "internal error on the server"
+
+#: .\templates\errors\500.html:12
+msgid "Por favor comuniquese con su administrador"
+msgstr "Please contact your administrador"
+
+#: .\templates\export_pdf.html:4
+msgid "Levantamiento Físico. Muebles y Otros Muebles"
+msgstr "Physical lifting. Furniture and others furniture"
+
+#: .\templates\export_pdf.html:19
+msgid "Selecione una oficina"
+msgstr "Select an office"
+
+#: .\templates\export_pdf.html:95
+msgid " Firma de los responsables"
+msgstr " Signature of responsible"
+
+#: .\templates\export_pdf.html:105
+msgid "Mostrando página"
+msgstr "Showing page"
+
+#: .\templates\export_pdf.html:105
+msgid "de"
+msgstr "of"
+
+#: .\templates\export_pdf.html:106
+msgid "No hay activos fijos en la oficina selecionada"
+msgstr "There are no fixed assets in the selected office"
+
+#: .\templates\export_pdf.html:122
+msgid "Nombre y Código de la UP"
+msgstr "Name and Code of the UP"
+
+#: .\templates\export_pdf.html:122
+msgid "Fecha"
+msgstr "Date"
+
+#: .\templates\export_pdf.html:123
+msgid "Nombre y Número del Centro de Costo del área que controle el AFT"
+msgstr "Name and Number of the Cost Center of the area controlled by FA"
+
+#: .\templates\export_pdf.html:125
+msgid "Local"
+msgstr "Local"
+
+#: .\templates\export_pdf.html:126
+msgid "Nombre y Firma del Jefe de Grupo de Contabilidad"
+msgstr "Name and Signature of the Head of the Accounting Group"
+
+#: .\templates\export_pdf.html:127
+msgid "Realizado por"
+msgstr "Made by"
+
+#: .\templates\filter.html:6
+msgid "Filtro"
+msgstr "Filter"
+
+#: .\templates\filter.html:14
+msgid "Filtros"
+msgstr "Filters"
+
+#: .\templates\filter.html:24
+msgid "Buscar"
+msgstr "Search"
+
+#: .\templates\language.html:20
+msgid "Seleccione su idioma"
+msgstr "Select your language"
+
+#: .\templates\modal_change_office.html:19
+msgid "Seleccione la nueva oficina"
+msgstr "Select an new office"
+
+#~ msgid "Activo Fijo añadido exitosamente"
+#~ msgstr "Fixed asset successfully added"
+
+#~ msgid "Trabajador añadido exitosamente"
+#~ msgstr " Worker added successfully"
+
+#~ msgid "Cancelar"
+#~ msgstr "Cancel"
+
+#~ msgid "Guardar"
+#~ msgstr "Save"
+
+#~ msgid "Tabla de"
+#~ msgstr "Table of"
+
+#~ msgid "Cerrar sección"
+#~ msgstr "Log out"
+
+#~ msgid "Fueron eliminados con exito los siguientes activos fijos: "
+#~ msgstr "The following fixed assets were successfully eliminated"

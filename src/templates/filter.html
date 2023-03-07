@@ -1,0 +1,30 @@
+{% load bootstrap %}
+{% load i18n %}
+<style>
+</style>
+<button id="filter" class="btn btn-sm btn-secondary" type=" button" data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasRight"
+        title={% trans 'Filtro' %} aria-controls="offcanvasRight" style="margin-bottom: 3px">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill"
+         viewBox="0 0 16 16">
+        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/>
+    </svg>
+</button>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel"><strong>{% trans 'Filtros' %}</strong></h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+
+    <div class="container offcanvas-body">
+        <form method="get" class="card card-body bg-light border-2" id="form-filter">
+            {% for field in filter.form.visible_fields %}
+                <div class="label_filter" style="margin-bottom: 4px">{{ field.label }}</div>
+                <div class="mb-2 field">{{ field|bootstrap_inline }}</div>
+            {% endfor %}
+            <input class="btn btn-warning border-dark text-black-50 mt-4" type="submit" value={% trans "Buscar" %}
+                    data-bs-dismiss="offcanvas">
+        </form>
+    </div>
+</div>

@@ -1,0 +1,520 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load inventory_extras %}
+{% block body %}
+    <style>
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+
+        main {
+            height: 100vh;
+            max-height: 100vh;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        .dropdown-toggle {
+            outline: 0;
+        }
+
+        .btn-toggle {
+            padding: .25rem .5rem;
+            font-weight: 600;
+            color: rgba(0, 0, 0, .65);
+            background-color: transparent;
+        }
+
+        .btn-toggle:hover,
+        .btn-toggle:focus {
+            color: rgba(0, 0, 0, .85);
+            background-color: #d2f4ea;
+        }
+
+        .btn-toggle::before {
+            width: 1.25em;
+            line-height: 0;
+            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+            transition: transform .35s ease;
+            transform-origin: .5em 50%;
+        }
+
+        .btn-toggle[aria-expanded="true"] {
+            color: rgba(0, 0, 0, .85);
+        }
+
+        .btn-toggle[aria-expanded="true"]::before {
+            transform: rotate(90deg);
+        }
+
+        .btn-toggle-nav a {
+            padding: .1875rem .5rem;
+            margin-top: .125rem;
+            margin-left: 1.25rem;
+        }
+
+        .btn-toggle-nav a:hover,
+        .btn-toggle-nav a:focus {
+            background-color: #d2f4ea;
+        }
+
+        .scrollarea {
+            overflow-y: auto;
+        }
+
+        #patern_content {
+            width: 100%;
+        }
+
+        #sidebar_response {
+            display: none;
+        }
+
+
+        @media (max-width: 1200px) {
+            #patern_content {
+                width: 73vw;
+            }
+        }
+
+        @media only screen and (max-width: 1100px) {
+            #patern_content {
+                width: auto;
+            }
+        }
+
+        @media only screen and (max-width: 1000px) {
+            #sidebar {
+                display: none;
+            }
+
+            #patern_content {
+                width: 100vw;
+            }
+
+            #sidebar_response {
+                display: block;
+            }
+        }
+    </style>
+    <div class="d-inline-flex w-100">
+        <div id="sidebar" style="width: 313px; min-height: 100vh">
+            {# sidebar #}
+            <div class="d-flex flex-nowrap shadow" style="min-height: 100%">
+                <div class="flex-shrink-0 p-3 bg-opacity-25 shadow" style="width: 298px;">
+                    <a href="{% url 'inventory:list_fixed_asset_user_view' %}"
+                       class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+                        <span class="fs-5 fw-semibold">{% trans 'Sistema de Activos Fijos' %}</span>
+                    </a>
+                    <ul class="list-unstyled ps-0">
+                        <li class="mb-1">
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                                    data-bs-toggle="collapse" data-bs-target="#fixedassent-collapse"
+                                    aria-expanded="false">
+                                {% trans 'Activos Fijos' %}
+                            </button>
+                            <div class="collapse" id="fixedassent-collapse">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a id="my_af" href="{% url 'inventory:list_fixed_asset_user_view' %}"
+                                           class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Mis activos fijos' %}</a>
+                                    </li>
+                                    {% if perms.inventory.can_view_the_dpto_fixedasset or perms.inventory.can_view_all_fixedasset %}
+                                        <li>
+                                            <a id="af" href="{% url 'inventory:list_fixed_asset_view' %}"
+                                               class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Activos fijos del' %}
+                                                {% if  perms.inventory.can_view_the_dpto_fixedasset %}
+                                                    {% trans 'Departamento' %}
+                                                {% else %}
+                                                    {% trans 'Área' %}
+                                                {% endif %}</a>
+                                        </li>
+                                        <li>
+                                            <a id="afd" class="link-dark d-inline-flex text-decoration-none rounded"
+                                               href="{% url 'inventory:list_fixed_asset_disabled_view' %}">
+                                                {% trans 'Activos fijos desactivados' %}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    <li><a id="pdf" href="{% url 'inventory:import_fixed_asset_to_pdf' %}"
+                                           class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Exportar a PDF' %}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        {% if perms.inventory.can_view_the_dpto_fixedasset or perms.inventory.can_view_all_fixedasset %}
+                            <li class="mb-1">
+                                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                                        data-bs-toggle="collapse" data-bs-target="#worker-collapse"
+                                        aria-expanded="false">
+                                    {% trans 'Trabajadores del' %}
+                                    {% if  perms.inventory.can_view_the_dpto_fixedasset %}
+                                        {% trans 'Departamento' %}
+                                    {% else %}
+                                        {% trans 'Área' %}
+                                    {% endif %}
+                                </button>
+                                <div class="collapse" id="worker-collapse">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                        <li>
+                                            <a id="worker" href="{% url 'people:list_worker_view' %}"
+                                               class="link-dark d-inline-flex text-decoration-none rounded">
+                                                {% trans 'Trabajadores activos' %}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a id="worker_disabled" href="{% url 'people:list_worker_disabled_view' %}"
+                                               class="link-dark d-inline-flex text-decoration-none rounded">
+                                                {% trans 'Trabajadores desactivados' %}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="mb-1">
+                                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                                        data-bs-toggle="collapse" data-bs-target="#other-collapse"
+                                        aria-expanded="false">
+                                    {% trans 'Otros' %}
+                                </button>
+                                <div id="other-collapse" class="collapse">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                        {% if perms.inventory.can_view_all_fixedasset %}
+                                            <li><a id="dpto" href="{% url 'people:list_department_view' %}"
+                                                   class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Departamentos' %}</a>
+                                            </li>
+                                        {% endif %}
+                                        <li><a id="office" href="{% url 'inventory:list_office_view' %}"
+                                               class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Oficinas' %}</a>
+                                        </li>
+                                        <li><a id="type" href="{% url 'inventory:list_type_fixed_asset_view' %}"
+                                               class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Tipos de activos fijos' %}</a>
+                                        </li>
+                                        {% if perms.inventory.can_view_all_fixedasset %}
+                                            <li><a id="hdpto" href="{% url 'people:list_headdepartment_view' %}"
+                                                   class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Jefes de Departamentos' %}</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </li>
+                        {% endif %}
+                        <li class="border-top my-3"></li>
+                        <li class="mb-1">
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                                    data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+                                {{ user }}
+                            </button>
+                            <div class="collapse" id="account-collapse">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a href="{% url 'people:detail_user_view' %}"
+                                           class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Detalles' %}</a>
+                                    </li>
+
+                                    <li><a id="log_out" href="{% url 'logout_saft' %}"
+                                           class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Desconectar' %}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <div class="d-flex w-100">
+            <div id="patern_content" style="margin: 0 10px;">
+                <div style="height: 50px;">
+                    <div class="d-flex">
+
+                        {# sidebar-response #}
+
+                        <div class="text-start mt-3" id="sidebar_response">
+                            <button class="btn btn-sm btn-secondary" type=" button" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasLeft"
+                                    aria-controls="offcanvasLeftMenu">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                                     class="bi bi-list text-white" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                                </svg>
+                            </button>
+                            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasLeft"
+                                 aria-labelledby="offcanvasRightLabel" style="width: 40%;">
+                                <div class="container offcanvas-body">
+                                    <main class="d-flex flex-nowrap h-100" style="overflow-x: hidden">
+                                        <div class="flex-shrink-0 p-3 bg-opacity-25 " style="width: 298px;">
+                                            <a href="{% url 'inventory:list_fixed_asset_user_view' %}"
+                                               class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+                                                <span class="fs-5 fw-semibold">{% trans 'Sistema de Activos Fijos' %}</span>
+                                            </a>
+                                            <ul class="list-unstyled ps-0">
+                                                <li class="mb-1">
+                                                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#fixedassent-collapse_resp"
+                                                            aria-expanded="false">
+                                                        {% trans 'Activos Fijos' %}
+                                                    </button>
+                                                    <div class="collapse" id="fixedassent-collapse_resp">
+                                                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                            <li><a id="my_af_resp"
+                                                                   href="{% url 'inventory:list_fixed_asset_user_view' %}"
+                                                                   class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Mis activos fijos' %}</a>
+                                                            </li>
+                                                            {% if perms.inventory.can_view_the_dpto_fixedasset or perms.inventory.can_view_all_fixedasset %}
+                                                                <li>
+                                                                    <a id="af_resp"
+                                                                       href="{% url 'inventory:list_fixed_asset_view' %}"
+                                                                       class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Activos fijos del' %}
+                                                                        {% if  perms.inventory.can_view_the_dpto_fixedasset %}
+                                                                            {% trans 'Departamento' %}
+                                                                        {% else %}
+                                                                            {% trans 'Área' %}
+                                                                        {% endif %}</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a id="afd_resp"
+                                                                       class="link-dark d-inline-flex text-decoration-none rounded"
+                                                                       href="{% url 'inventory:list_fixed_asset_disabled_view' %}">
+                                                                        {% trans 'Activos fijos desactivados' %}
+                                                                    </a>
+                                                                </li>
+                                                            {% endif %}
+                                                            <li>
+                                                                <a id="pdf_resp"
+                                                                   href="{% url 'inventory:import_fixed_asset_to_pdf' %}"
+                                                                   class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Exportar a PDF' %}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                                {% if perms.inventory.can_view_the_dpto_fixedasset or perms.inventory.can_view_all_fixedasset %}
+                                                    <li class="mb-1">
+                                                        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#worker-collapse_resp"
+                                                                aria-expanded="false">
+                                                            {% trans 'Trabajadores del' %}
+                                                            {% if  perms.inventory.can_view_the_dpto_fixedasset %}
+                                                                {% trans 'Departamento' %}
+                                                            {% else %}
+                                                                {% trans 'Área' %}
+                                                            {% endif %}
+                                                        </button>
+                                                        <div class="collapse" id="worker-collapse_resp">
+                                                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                                <li>
+                                                                    <a id="worker_resp"
+                                                                       href="{% url 'people:list_worker_view' %}"
+                                                                       class="link-dark d-inline-flex text-decoration-none rounded">
+                                                                        {% trans 'Trabajadores activos' %}
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a id="worker_disabled_resp"
+                                                                       class="link-dark d-inline-flex text-decoration-none rounded"
+                                                                       href="{% url 'people:list_worker_disabled_view' %}">
+                                                                        {% trans 'Trabajadores desactivados' %}
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    <li class="mb-1">
+                                                        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                                                                data-bs-toggle="collapse"
+                                                                data-bs-target="#other-collapse_resp"
+                                                                aria-expanded="false">
+                                                            {% trans 'Otros' %}
+                                                        </button>
+                                                        <div id="other-collapse_resp" class="collapse">
+                                                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                                {% if perms.inventory.can_view_all_fixedasset %}
+                                                                    <li><a id="dpto_resp"
+                                                                           href="{% url 'people:list_department_view' %}"
+                                                                           class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Departamentos' %}</a>
+                                                                    </li>
+                                                                {% endif %}
+                                                                <li><a id="office_resp"
+                                                                       href="{% url 'inventory:list_office_view' %}"
+                                                                       class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Oficinas' %}</a>
+                                                                </li>
+                                                                <li><a id="type_resp" id="type_resp"
+                                                                       href="{% url 'inventory:list_type_fixed_asset_view' %}"
+                                                                       class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Tipos de activos fijos' %}</a>
+                                                                </li>
+                                                                {% if perms.inventory.can_view_all_fixedasset %}
+                                                                    <li><a id="hdpto_resp"
+                                                                           href="{% url 'people:list_headdepartment_view' %}"
+                                                                           class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Jefes de Departamentos' %}</a>
+                                                                    </li>
+                                                                {% endif %}
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                {% endif %}
+                                                <li class="border-top my-3"></li>
+                                                <li class="mb-1">
+                                                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#account-collapse"
+                                                            aria-expanded="false">
+                                                        {{ user }}
+                                                    </button>
+                                                    <div class="collapse" id="account-collapse">
+                                                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                                            <li><a href="{% url 'people:detail_user_view' %}"
+                                                                   class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Detalles' %}</a>
+                                                            </li>
+
+                                                            <li><a id="log_out_res" href="{% url 'logout_saft' %}"
+                                                                   class="link-dark d-inline-flex text-decoration-none rounded">{% trans 'Desconectar' %}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </main>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="w-100">
+                            <div class="text-center fs-5 fw-semibold mt-3" id="name">{{ name }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>{% block contents %}{% endblock %}</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        (() => {
+            'use strict'
+            const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            tooltipTriggerList.forEach(tooltipTriggerEl => {
+                new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        })()
+        //------------background y arrow de los elementos del sidebar---------------------------
+        window.addEventListener('load', () => {
+            url = document.location.href.toString()
+            if (url.includes('inventory/') && (!url.includes('/others/'))) {
+                btn_string = document.getElementById('fixedassent-collapse').parentElement.innerHTML.toString().replace('aria-expanded="false"', 'aria-expanded="true"')
+                document.getElementById('fixedassent-collapse').parentElement.innerHTML = btn_string
+                btn_string = document.getElementById('fixedassent-collapse_resp').parentElement.innerHTML.toString().replace('aria-expanded="false"', 'aria-expanded="true"')
+                document.getElementById('fixedassent-collapse_resp').parentElement.innerHTML = btn_string
+                document.getElementById('fixedassent-collapse').classList.add('show')
+                document.getElementById('fixedassent-collapse_resp').classList.add('show')
+
+                if (url.includes('home/')) {
+                    document.getElementById('my_af').classList.add('bg-secondary')
+                    document.getElementById('my_af_resp').classList.add('bg-secondary')
+                    document.getElementById('my_af').classList.add('bg-opacity-50')
+                    document.getElementById('my_af_resp').classList.add('bg-opacity-50')
+                }
+                if (url.includes('fixedasset/')) {
+                    document.getElementById('af_resp').classList.add('bg-opacity-50')
+                    document.getElementById('af_resp').classList.add('bg-secondary')
+                    document.getElementById('af').classList.add('bg-secondary')
+                    document.getElementById('af').classList.add('bg-opacity-50')
+
+                }
+                if (url.includes('disabled/')) {
+                    document.getElementById('afd').classList.add('bg-secondary')
+                    document.getElementById('afd').classList.add('bg-opacity-50')
+                    document.getElementById('afd_resp').classList.add('bg-secondary')
+                    document.getElementById('afd_resp').classList.add('bg-opacity-50')
+                }
+                if (url.includes('importpdf/')) {
+                    document.getElementById('pdf_resp').classList.add('bg-secondary')
+                    document.getElementById('pdf').classList.add('bg-secondary')
+                    document.getElementById('pdf_resp').classList.add('bg-opacity-50')
+                    document.getElementById('pdf').classList.add('bg-opacity-50')
+                }
+
+            }
+            if (url.includes('people/worker')) {
+                btn_string = document.getElementById('worker-collapse').parentElement.innerHTML.toString().replace('aria-expanded="false"', 'aria-expanded="true"')
+                document.getElementById('worker-collapse').parentElement.innerHTML = btn_string
+                btn_string = document.getElementById('worker-collapse_resp').parentElement.innerHTML.toString().replace('aria-expanded="false"', 'aria-expanded="true"')
+                document.getElementById('worker-collapse_resp').parentElement.innerHTML = btn_string
+                document.getElementById('worker-collapse').classList.add('show')
+                document.getElementById('worker-collapse_resp').classList.add('show')
+                if (url.includes('worker/')) {
+                    document.getElementById('worker').classList.add('bg-secondary')
+                    document.getElementById('worker_resp').classList.add('bg-secondary')
+                    document.getElementById('worker').classList.add('bg-opacity-50')
+                    document.getElementById('worker_resp').classList.add('bg-opacity-50')
+                }
+                if (url.includes('disabled/')) {
+                    document.getElementById('worker_disabled').classList.add('bg-secondary')
+                    document.getElementById('worker_disabled_resp').classList.add('bg-secondary')
+                    document.getElementById('worker_disabled').classList.add('bg-opacity-50')
+                    document.getElementById('worker_disabled_resp').classList.add('bg-opacity-50')
+                }
+
+            }
+            if (url.includes('/others/')) {
+                btn_string = document.getElementById('other-collapse').parentElement.innerHTML.toString().replace('aria-expanded="false"', 'aria-expanded="true"')
+                document.getElementById('other-collapse').parentElement.innerHTML = btn_string
+                btn_string = document.getElementById('other-collapse_resp').parentElement.innerHTML.toString().replace('aria-expanded="false"', 'aria-expanded="true"')
+                document.getElementById('other-collapse_resp').parentElement.innerHTML = btn_string
+                document.getElementById('other-collapse').classList.add('show')
+                document.getElementById('other-collapse_resp').classList.add('show')
+                if (url.includes('department/') && (!url.includes('headdepartment/'))) {
+                    document.getElementById('dpto').classList.add('bg-secondary')
+                    document.getElementById('dpto_resp').classList.add('bg-secondary')
+                    document.getElementById('dpto').classList.add('bg-opacity-50')
+                    document.getElementById('dpto_resp').classList.add('bg-opacity-50')
+                }
+                if (url.includes('office/')) {
+                    document.getElementById('office').classList.add('bg-secondary')
+                    document.getElementById('office_resp').classList.add('bg-secondary')
+                    document.getElementById('office').classList.add('bg-opacity-50')
+                    document.getElementById('office_resp').classList.add('bg-opacity-50')
+                }
+                if (url.includes('typefixedasset/')) {
+                    document.getElementById('type').classList.add('bg-secondary')
+                    document.getElementById('type_resp').classList.add('bg-secondary')
+                    document.getElementById('type').classList.add('bg-opacity-50')
+                    document.getElementById('type_resp').classList.add('bg-opacity-50')
+                }
+                if (url.includes('headdepartment/')) {
+                    document.getElementById('hdpto').classList.add('bg-secondary')
+                    document.getElementById('hdpto_resp').classList.add('bg-secondary')
+                    document.getElementById('hdpto').classList.add('bg-opacity-50')
+                    document.getElementById('hdpto_resp').classList.add('bg-opacity-50')
+                }
+
+            }
+
+        })
+    </script>
+{% endblock %}

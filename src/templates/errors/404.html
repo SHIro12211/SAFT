@@ -1,0 +1,14 @@
+{% extends 'body.html' %}
+{% load i18n %}
+{% block title %}
+    {% trans 'Error' %} 404
+{% endblock %}
+{% block nav %}{% include 'nav_template.html' %}{% endblock %}
+{% block contents %}
+    {% load static %}
+    <div class="container text-center">
+        <h3 class="mt-5">{% trans 'Página no encontrada' %}</h3>
+        <img class="rounded-2" src="{% static 'photo/errors/404.png' %}" alt="404">
+        <p class="text-black-50">{% trans 'Usted esta intentando acceder a una página que no existe' %}</p>
+    </div>
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends "body.html" %}
+{% load i18n %}
+{% load inventory_extras %}
+{% block title %}{% trans 'Levantamiento Físico. Muebles y Otros Objetos' %}{% endblock %}
+
+{% block contents %}
+    <div class="container">
+        <div class="d-flex justify-content-between mt-3">
+            <div class="d-flex ">
+                <div>
+                    <div id="import_btn">
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <form method="post" id="form_select">
+                    {% csrf_token %}
+                    <select class="form-select form-select-sm" id="select_office" name="select_office">
+                        <option selected>--{% trans 'Selecione una oficina' %}--</option>
+                        {% for ofi in office %}
+                            <option value="{{ ofi.id }}">{{ ofi }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+        </div>
+        {% if worker %}
+            <p id="area" hidden>{{ area }}</p>
+            <p id="office_selected" hidden>{{ office_selected }}</p>
+            <p id="person" hidden>{{ worker }}</p>
+            <table class="table table-striped table-hover table-sm shadow  bg-body rounded mt-1 table-bordered"
+                   id="table_import">
+                <thead>
+                <tr class="table-dark">
+                    {% for item in enc %}
+                        <th scope="col" class="text-center">
+                            {{ item }}
+                        </th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody id="table_office_aft">
+                {% for fa in fixedassent %}
+                    <tr>
+                        <td class="no. text-center">{{ forloop.counter }}</td>
+                        <td class="text-center">{{ fa.stock_number }}</td>
+                        <td class="text-center">{{ fa.id_fixed_asset_type }}</td>
+                        {% if fa.model %}
+                            <td class="text-center">{{ fa.model|upper }}</td>
+                        {% else %}
+                            <td class="text-center"></td>
+                        {% endif %}
+                        {% if fa.brad %}
+                            <td class="text-center">{{ fa.brand }}</td>
+                        {% else %}
+                            <td class="text-center"></td>
+                        {% endif %}
+                        {% if fa.serial_number %}
+                            <td class="text-center">{{ fa.serial_number|upper }}</td>
+                        {% else %}
+                            <td class="text-center "></td>
+                        {% endif %}
+                        <td class="text-center">{{ fa.id_statu.statu|upper }}</td>
+                        <td class="text-start person">
+                            <ul>
+                                {% for item in dic_responsbile %}
+                                    {% if item.id == fa.id %}
+                                        {% for worker in item.list_responsible %}
+                                            <li class="name_worker_responsible text-start "
+                                                style="list-style-type:none"> {{ worker }}</li>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td class="text-center">{{ fa.observations }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block scrip %}
+    <script>
+        document.getElementById('select_office').addEventListener('change', (e) => {
+            if (e.target.value.innerText != '--Seleccione una oficina--')
+                document.getElementById('form_select').submit()
+        })
+        worker_text_signature = '{% trans ' Firma de los responsables' %}' + ' :\n'
+        {% for name in responsible_signature %}
+            worker_text_signature += ' ' + '{{ name }}' + '________________________' + '\n'
+        {% endfor %}
+        const time = Date.now();
+        const today = new Date(time)
+        window.addEventListener('load', async () => {
+            person_name = await search_ls_api('{{ user.person }}')
+            $(document).ready(function () {
+                var table = $('#table_import').DataTable({
+                    language: {
+                        info: '{% trans 'Mostrando página' %} _PAGE_{% trans 'de' %}_PAGES_',
+                        infoEmpty: '{% trans 'No hay activos fijos en la oficina selecionada' %}'
+                    },
+                    ordering: false,
+                    info: {
+                        className: ''
+                    },
+                    dom: 'Bt',
+                    buttons: [
+                        {
+                            extend: "pdfHtml5",
+                            text: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"\n' +
+                                'class="bi bi-filetype-pdf" viewBox="0 0 16 16">\n' +
+                                '<path fill-rule="evenodd"\n' +
+                                ' d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z"/>\n' +
+                                '</svg>',
+                            className: 'btn btn-sm btn-warning m-sm-1',
+                            messageTop: '{% trans 'Nombre y Código de la UP' %}:_________________________                                                                                                                {% trans 'Fecha' %}: ' + today.toLocaleDateString() + '\n' +
+                                '{% trans 'Nombre y Número del Centro de Costo del área que controle el AFT' %}:_____________________________\n' +
+                                '{% trans 'Área' %}: ' + document.getElementById('area').innerText + ' \n' +
+                                '{% trans 'Local' %}: ' + '{{ office_selected }}' + '\n' +
+                                '{% trans 'Nombre y Firma del Jefe de Grupo de Contabilidad' %}:________________________________________________\n' +
+                                '{% trans 'Realizado por' %}: ' + person_name.name + '\n' +
+                                worker_text_signature,
+                            pageSize: 'Letter',
+                            orientation: 'landscape',
+                            customize: function (doc) {
+                                doc.defaultStyle.alignment = 'center';
+                                doc.defaultStyle = {alignment: 'center', margin: 2};
+                                doc.styles.message = {
+                                    alignment: 'left',
+                                }
+                                doc.content[2].table.widths =
+                                    Array(doc.content[2].table.body[0].length + 1).join('*').split('')
+                                doc.content[2].table.widths[0] = 'auto'
+                                doc.content[2].table.widths[1] = 'auto'
+                                doc.content[2].table.widths[2] = 'auto'
+                                doc.content[2].table.widths[4] = 'auto'
+                                doc.content[2].table.widths[5] = 'auto'
+                                doc.content[2].table.widths[6] = 'auto'
+                                {#doc.content[2].table.widths[7] = 'auto'#}
+                            }
+                        }
+                    ]
+                });
+                table.buttons().container().appendTo('#import_btn');
+            });
+        })
+    </script>
+{% endblock %}

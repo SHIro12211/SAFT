@@ -1,0 +1,57 @@
+{% load inventory_extras %}
+<nav class="badge">
+    <ul class="pagination justify-content-start " id="list_index">
+        {% if page_obj.number > 2 %}
+            <li class="page-item ">
+                <a class="page-link bg-light  text-black font-monospace" href="{% save_url 1 request.GET %}">1</a>
+            </li>
+        {% endif %}
+        {% if  page_obj.number > 4 %}
+            <li class="page-item ">
+                <span class="page-link bg-light text-black">...</span>
+            </li>
+        {% endif %}
+        {% if page_obj.has_previous %}
+            {% res page_obj.previous_page_number 1 as previous_previous_page_number %}
+            {% if previous_previous_page_number > 1 %}
+                <li class="page-item ">
+                    <a class="page-link bg-light text-black  font-monospace"
+                       href="{% save_url previous_previous_page_number request.GET %}">{{ previous_previous_page_number }}</a>
+                </li>
+            {% endif %}
+            <li class="page-item ">
+                <a class="page-link bg-light text-black  font-monospace"
+                   href="{% save_url page_obj.previous_page_number request.GET %}">{{ page_obj.previous_page_number }}</a>
+            </li>
+        {% endif %}
+        <li class="page-item  ">
+            <span class="page-link bg-dark text-white  font-monospace">{{ page_obj.number }}</span>
+        </li>
+        {% if page_obj.has_next %}
+            <li class="page-item ">
+                <a class="page-link bg-light  text-black  font-monospace"
+                   href="{% save_url page_obj.next_page_number request.GET %}">{{ page_obj.next_page_number }}</a>
+            </li>
+            {% sum page_obj.next_page_number 1 as next_next_page_number %}
+            {% if  next_next_page_number < page_obj.paginator.num_pages %}
+                <li class="page-item ">
+                    <a class="page-link bg-light  text-black  font-monospace"
+                       href="{% save_url next_next_page_number request.GET %}">{{ next_next_page_number }}</a>
+                </li>
+            {% endif %}
+            {% sum page_obj.next_page_number 2 as next_next_next_page_number %}
+            {% if  next_next_next_page_number < page_obj.paginator.num_pages %}
+                <li class="page-item ">
+                    <span class="page-link bg-light text-black">...</span>
+                </li>
+            {% endif %}
+        {% endif %}
+        {% if page_obj.next_page_number != page_obj.paginator.num_pages %}
+            <li class="page-item ">
+                <a class="page-link bg-light text-black  font-monospace"
+                   href="{% save_url page_obj.paginator.num_pages request.GET %}">{{ page_obj.paginator.num_pages }}</a>
+            </li>
+        {% endif %}
+    </ul>
+
+</nav>

@@ -1,0 +1,205 @@
+{% load i18n %}
+{% load inventory_extras %}
+{% for item in object_list %}
+    <tr>
+        <th>
+            <input onclick="change_state_toggle()" class="form-check-input col_check" type="checkbox"
+                   value="{{ item.id }}">
+        </th>
+        {% if af %}
+            <td class="text-center">
+                {% if perms.inventory.can_view_the_dpto_fixedasset and  not item.is_active %}
+                    {{ item.stock_number }}
+                {% else %}
+                    <a href="{% url 'inventory:detail_fixed_asset_view' item.id %}"
+                       class="text-black text-decoration-none">{{ item.stock_number }}</a>
+                {% endif %}
+            </td>
+            <td class="text-center">{{ item.id_fixed_asset_type }}</td>
+            {% if item.model %}
+                <td class="text-center">{{ item.model|upper }}</td>
+            {% else %}
+                <td class="text-center">-</td>
+            {% endif %}
+            {% if  item.brand %}
+                <td class="text-center">{{ item.brand }}</td>
+            {% else %}
+                <td class="text-center">-</td>
+            {% endif %}
+            {% if  item.serial_number %}
+                <td class="text-center">{{ item.serial_number|upper }}</td>
+            {% else %}
+                <td class="text-center">-</td>
+            {% endif %}
+            <td class="text-center">{{ item.id_statu }}</td>
+            {% if item.id_office %}
+                <td class="text-center" title="{{ item.id_office.description }}">{{ item.id_office.number }}</td>
+            {% else %}
+                <td class="text-center">-</td>
+            {% endif %}
+            <td>
+                {% if perms.inventory.can_view_the_dpto_fixedasset and not item.is_active %}
+                {% else %}
+                    <a class="text-decoration-none "
+                       href="{{ update_url }}{{ item.id }}" title={% trans 'Modificar' %}>
+                        <button class="btn btn-warning badge text-black-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                                 class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd"
+                                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                            </svg>
+                        </button>
+                    </a>
+                {% endif %}
+            </td>
+        {% endif %}
+        {% if w %}
+            <td class="text-center">
+
+                <a href="{% url 'people:detail_worker_view' item.id %}"
+                   class="text-black text-decoration-none">{{ item.id_person }}</a>
+            </td>
+            <td class="text-center">{{ item.mail }}</td>
+            {% if not perms.inventory.can_view_the_dpto_fixedasset %}
+                <td class="text-center">{{ item.id_department }}</td>
+            {% endif %}
+            <td class="text-center">{{ item.fixedasset_set.count }}</td>
+            <td>
+                <a class="text-decoration-none "
+                   href="{{ update_url }}{{ item.id }}" title={% trans 'Modificar' %}>
+                    <button class="btn btn-warning badge text-black-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                             class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                        </svg>
+                    </button>
+                </a>
+            </td>
+        {% endif %}
+        {% if dpto %}
+            <td class="text-center">{{ item.object_list.name }}</td>
+            {% if item.object_list.headdepartment.id_worker.id_person %}
+                <td class="text-center">{{ item.object_list.headdepartment.id_worker.id_person }}</td>
+            {% else %}
+                <td class="text-center">---</td>
+            {% endif %}
+            <td class="text-center">{{ item.object_list.worker_set.count }}</td>
+            <td class="text-center">{{ item.cant_fa }}</td>
+            <td>
+                <a class="text-decoration-none "
+                   href="{{ update_url }}{{ item.object_list.id }}" title={% trans 'Modificar' %}>
+                    <button class="btn btn-warning badge text-black-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                             class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                        </svg>
+                    </button>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'people:delete_department_view' item.object_list.id %}">
+                    <button class="btn btn-danger badge text-black-50" title={% trans 'Eliminar' %} type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                             class="bi bi-trash-fill" viewBox="0 0 16 16">
+                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                        </svg>
+                    </button>
+                </a>
+            </td>
+        {% endif %}
+        {% if offi %}
+            <td class="text-center">{{ item.number }}</td>
+            <td class="text-center">{{ item.fixedasset_set.count }}</td>
+            <td class="text-center">{{ item.description }}</td>
+            <td class="text-center">
+                <a class="text-decoration-none "
+                   href="{{ update_url }}{{ item.id }}" title={% trans 'Modificar' %}>
+                    <button class="btn btn-warning badge text-black-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                             class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                        </svg>
+                    </button>
+                </a>
+            </td>
+            <td class="text-center">
+                <a href="{% url 'inventory:delete_office_view' item.id %}">
+                    <button class="btn btn-danger badge text-black-50" title={% trans 'Eliminar' %} type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                             class="bi bi-trash-fill" viewBox="0 0 16 16">
+                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                        </svg>
+                    </button>
+                </a>
+            </td>
+        {% endif %}
+        {% if w or af %}
+            <td>
+                {% if item.is_active %}
+                    <button class="btn btn-danger badge text-black-50" title={% trans 'Baja' %} type="button"
+                            onclick="redirect_operation(window.location.toString(),'delete', {{ item.id }})">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                             class="bi bi-trash-fill" viewBox="0 0 16 16">
+                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                        </svg>
+                    </button>
+                {% endif %}
+            </td>
+        {% endif %}
+        {% if type_fa %}
+            <td class="text-center">{{ item.qs.type_FixedAsset }}</td>
+            <td class="text-center">{{ item.count}}</td>
+            <td class="text-center">
+                <a class="text-decoration-none "
+                   href="{{ update_url }}{{ item.qs.id }}" title={% trans 'Modificar' %}>
+                    <button class="btn btn-warning badge text-black-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                             class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                        </svg>
+                    </button>
+                </a>
+            </td>
+            <td class="text-center">
+                <a href="{% url 'inventory:delete_type_fixed_asset_view' item.qs.id %}">
+                    <button class="btn btn-danger badge text-black-50" title={% trans 'Eliminar' %} type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                             class="bi bi-trash-fill" viewBox="0 0 16 16">
+                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                        </svg>
+                    </button>
+                </a>
+            </td>
+        {% endif %}
+        {% if hdpto %}
+            <td class="text-center">{{ item.id_worker.id_person }}</td>
+            <td class="text-center">{{ item.id_department.name }}</td>
+            <td class="text-center">{{ item.id_department.worker_set.count }}</td>
+            <td>
+                <a class="text-decoration-none "
+                   href="{{ update_url }}{{ item.id }}" title={% trans 'Modificar' %}>
+                    <button class="btn btn-warning badge text-black-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
+                             class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                        </svg>
+                    </button>
+                </a>
+            </td>
+            <td>
+
+            </td>
+        {% endif %}
+    </tr>
+{% endfor %}
